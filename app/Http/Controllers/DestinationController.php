@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\DestinationRequest;
+use App\Http\Resources\DestinationResource;
+use App\Repositories\DestinationRepositoryInterface;
 use App\Services\DestinationService;
 use Illuminate\Http\Request;
 use DB;
@@ -11,10 +13,12 @@ use DB;
 class DestinationController extends Controller
 {
     private DestinationService $destinationService;
+    private DestinationRepositoryInterface $destinationRepositoryInterface;
 
-    public function __construct(DestinationService $destinationService)
+    public function __construct(DestinationService $destinationService, DestinationRepositoryInterface $destinationRepositoryInterface)
     {
         $this->destinationService = $destinationService;
+        $this->destinationRepositoryInterface = $destinationRepositoryInterface;
     }
 
     public function addDestination(DestinationRequest $destinationRequest)
@@ -27,6 +31,20 @@ class DestinationController extends Controller
             return ResponseHelper::success($data, 'berhasil menambahkan destinasi baru');
         } catch (\Throwable $thrw) {
             DB::rollBack();
+            return ResponseHelper::error(null, $thrw->getMessage());
+        }
+    }
+
+    public function getAllDestination()
+    {
+        return DestinationResource::collection($this->destinationRepositoryInterface->all());
+    }
+
+    public function showDestination($slug)
+    {
+        try {
+            return ResponseHelper::success(new DestinationResource($this->destinationRepositoryInterface->showBySlug($slug)), 'berhasil mengambil data');
+        } catch (\Throwable $thrw) {
             return ResponseHelper::error(null, $thrw->getMessage());
         }
     }

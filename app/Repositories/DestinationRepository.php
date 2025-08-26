@@ -10,9 +10,15 @@ class DestinationRepository implements DestinationRepositoryInterface
     {
         return Destination::create($data);
     }
-    public function show($id)
+    public function showById($id)
     {
 
+    }
+
+    public function showBySlug($slug)
+    {
+        $destination = Destination::where('slug', $slug);
+        return $destination;
     }
     public function all(){
 
