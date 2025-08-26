@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->prefix('bookings')->group(function() {
 Route::middleware('auth:sanctum')->prefix('destinations')->group(function () {
     Route::post('add', [DestinationController::class, 'addDestination'])->middleware('role:admin');
     Route::get('all', [DestinationController::class, 'getAllDestination']);
+    Route::get('show/{slug}', [DestinationController::class, 'showDestination']);
 });
 
 Route::middleware('auth:sanctum')->prefix('packages')->group(function () {
