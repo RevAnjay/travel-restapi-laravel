@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Destination extends Model
 {
     use DestinationSlug;
-    
+
     protected $fillable = [
-        'name',
+        'title',
+        'slug',
         'description',
         'location',
         'price',

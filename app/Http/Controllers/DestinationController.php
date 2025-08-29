@@ -13,12 +13,12 @@ use DB;
 class DestinationController extends Controller
 {
     private DestinationService $destinationService;
-    private DestinationRepositoryInterface $destinationRepositoryInterface;
+    private DestinationRepositoryInterface $destinationRepository;
 
-    public function __construct(DestinationService $destinationService, DestinationRepositoryInterface $destinationRepositoryInterface)
+    public function __construct(DestinationService $destinationService, DestinationRepositoryInterface $destinationRepository)
     {
         $this->destinationService = $destinationService;
-        $this->destinationRepositoryInterface = $destinationRepositoryInterface;
+        $this->destinationRepository = $destinationRepository;
     }
 
     public function addDestination(DestinationRequest $destinationRequest)
@@ -37,13 +37,13 @@ class DestinationController extends Controller
 
     public function getAllDestination()
     {
-        return DestinationResource::collection($this->destinationRepositoryInterface->all());
+        return DestinationResource::collection($this->destinationRepository->all());
     }
 
     public function showDestination($slug)
     {
         try {
-            return ResponseHelper::success(new DestinationResource($this->destinationRepositoryInterface->showBySlug($slug)), 'berhasil mengambil data');
+            return ResponseHelper::success(new DestinationResource($this->destinationRepository->showBySlug($slug)), 'berhasil mengambil data');
         } catch (\Throwable $thrw) {
             return ResponseHelper::error(null, $thrw->getMessage());
         }

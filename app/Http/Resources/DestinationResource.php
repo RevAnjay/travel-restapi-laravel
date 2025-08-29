@@ -17,7 +17,8 @@ class DestinationResource extends JsonResource
         // return parent::toArray($request);
 
         return [
-            'name' => $this->name,
+            'title' => $this->title,
+            'slug' => $this->slug,
             'description' => $this->description,
             'location' => $this->location,
             'price' => $this->price,

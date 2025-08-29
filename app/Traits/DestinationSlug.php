@@ -15,7 +15,7 @@ trait DestinationSlug
                 $originalSlug = $slug;
                 $count = 1;
 
-                while($model->newQuery()->where('slug', $slug)) {
+                while($model->newQuery()->where('slug', $slug)->exists()) {
                     $slug = $originalSlug . '-' . $count++;
                 }
 

@@ -10,11 +10,11 @@ use App\Traits\UploadImage;
 class DestinationService
 {
     use UploadImage;
-    private DestinationRepositoryInterface $destinationRepositoryInterface;
+    private DestinationRepositoryInterface $destinationRepository;
 
-    public function __construct(DestinationRepositoryInterface $destinationRepositoryInterface)
+    public function __construct(DestinationRepositoryInterface $destinationRepository)
     {
-        $this->destinationRepositoryInterface = $destinationRepositoryInterface;
+        $this->destinationRepository = $destinationRepository;
     }
 
     public function addDestination(DestinationRequest $destinationRequest)
@@ -23,8 +23,8 @@ class DestinationService
 
         if ($destinationRequest->hasFile('images')) $validated['images'] = $this->upload('destination', $destinationRequest->file('images'));
 
-        $result = $this->destinationRepositoryInterface->add($validated);
+        $result = $this->destinationRepository->add($validated);
 
-        return (object) new DestinationResource($result);
+        return new DestinationResource($result);
     }
 }

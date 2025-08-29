@@ -17,11 +17,10 @@ class DestinationRepository implements DestinationRepositoryInterface
 
     public function showBySlug($slug)
     {
-        $destination = Destination::where('slug', $slug);
-        return $destination;
+        return Destination::where('slug', $slug)->first();
     }
     public function all(){
-
+        return Destination::all();
     }
     public function update($data, $id)
     {
