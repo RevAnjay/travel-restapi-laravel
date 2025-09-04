@@ -27,4 +27,23 @@ class DestinationService
 
         return new DestinationResource($result);
     }
+
+    public function updateDestination(DestinationRequest $request, $id)
+    {
+        $validated = $request->validated();
+
+        return (object) $this->destinationRepository->update($validated, $id);
+    }
+
+    public function getAllDestination(int $perPage = 10, string $sortBy = 'created_at', string $direction = 'asc')
+    {
+        $allowedShort = ['created_at', 'price', 'title'];
+        if (!in_array($sortBy, $allowedShort)) {
+            $sortBy = 'created_at';
+        }
+
+        $direction = strtolower($direction) === 'asc' ? 'asc' : 'desc';
+
+        return $this->destinationRepository->all($perPage, $sortBy, $direction);
+    }
 }

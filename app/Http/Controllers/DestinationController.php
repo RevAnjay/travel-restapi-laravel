@@ -29,23 +29,47 @@ class DestinationController extends Controller
 
             DB::commit();
             return ResponseHelper::success($data, 'berhasil menambahkan destinasi baru');
-        } catch (\Throwable $thrw) {
+        } catch (\Throwable $th) {
             DB::rollBack();
-            return ResponseHelper::error(null, $thrw->getMessage());
+            return ResponseHelper::error(null, $th->getMessage());
         }
     }
 
-    public function getAllDestination()
+    public function getAllDestination(Request $request)
     {
-        return DestinationResource::collection($this->destinationRepository->all());
+        return DestinationResource::collection($this->destinationService->getAllDestination($request->integer('per_page', 10), $request->get('sort_by', 'created_at'), $request->get('direction', 'asc')));
     }
 
     public function showDestination($slug)
     {
         try {
             return ResponseHelper::success(new DestinationResource($this->destinationRepository->showBySlug($slug)), 'berhasil mengambil data');
-        } catch (\Throwable $thrw) {
-            return ResponseHelper::error(null, $thrw->getMessage());
+        } catch (\Throwable $th) {
+            return ResponseHelper::error(null, $th->getMessage());
+        }
+    }
+
+    public function updateDestination(DestinationRequest $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            $data = $this->destinationService->updateDestination($request, $id);
+
+            DB::commit();
+            return ResponseHelper::success(new DestinationResource($data), 'berhasil update destination');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return ResponseHelper::error(null, $th->getMessage());
+        }
+    }
+
+    public function deleteDestination($id)
+    {
+        try {
+            $this->destinationRepository->remove($id);
+            return ResponseHelper::success(null, 'berhasil delete destination');
+        } catch (\Throwable $th) {
+            return ResponseHelper::error(null, $th->getMessage());
         }
     }
 }

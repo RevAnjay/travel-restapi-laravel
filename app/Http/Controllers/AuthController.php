@@ -22,8 +22,8 @@ class AuthController extends Controller
     {
         try {
             return ResponseHelper::success($this->userService->handleRegister($request), 'berhasil register');
-        } catch (\Throwable $thrw) {
-            return ResponseHelper::error(null, $thrw->getMessage());
+        } catch (\Throwable $th) {
+            return ResponseHelper::error(null, $th->getMessage());
         }
     }
 
@@ -31,8 +31,8 @@ class AuthController extends Controller
     {
         try {
             return ResponseHelper::success($this->userService->handleLogin($request), 'berhasil login');
-        } catch (\Throwable $thrw) {
-            return ResponseHelper::error(null, $thrw->getMessage());
+        } catch (\Throwable $th) {
+            return ResponseHelper::error(null, $th->getMessage());
         }
     }
 
@@ -44,8 +44,8 @@ class AuthController extends Controller
             $user->currentAccessToken()->delete();
 
             return ResponseHelper::success(null, 'berhasil logout');
-        } catch (\Throwable $thrw) {
-            return ResponseHelper::error(null, $thrw->getMessage());
+        } catch (\Throwable $th) {
+            return ResponseHelper::error(null, $th->getMessage());
         }
     }
 }
